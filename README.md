@@ -144,7 +144,7 @@ public DataTable GetCustomerInfo(string id, DateTime? startDate = null, DateTime
 }
 ```
 
-See the full version in [Program.cs](Demo/Program.cs)
+See the full version in [Program.cs](src/Program.cs)
 
 ---
 
