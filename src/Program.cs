@@ -57,8 +57,11 @@ public class CustomerService
             query = query.Where(c => startDate <= c.CreatedAt && c.CreatedAt <= endDate);
         }
 
-        var customer = await query.FirstOrDefaultAsync()
-            ?? throw new InvalidOperationException($"Customer with ID '{id}' not found or does not match the specified date range.");
+        var customer = await query
+            .AsNoTracking()
+            .FirstOrDefaultAsync()
+            ?? throw new KeyNotFoundException($"Customer with ID '{id}' not found or does not match the specified date range.");
+
         return customer;
     }
 

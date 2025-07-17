@@ -62,8 +62,9 @@ public async Task<Customer> GetCustomerInfo(string id)
 
     var customer = await _dbContext.Customers
         .Where(c => c.Id == id)
+        .AsNoTracking()
         .FirstOrDefaultAsync()
-        ?? throw new InvalidOperationException($"Customer with ID '{id}' not found or does not match the specified date range.");
+        ?? throw new KeyNotFoundException($"Customer with ID '{id}' not found");
 
     return customer;
 }
@@ -94,9 +95,11 @@ public async Task<Customer> GetCustomerInfo(string id, DateTime? startDate = nul
         query = query.Where(c => startDate <= c.CreatedAt && c.CreatedAt <= endDate);
     }
 
-    var customer = await query.FirstOrDefaultAsync()
-        ?? throw new InvalidOperationException($"Customer with ID '{id}' not found or does not match the specified date range.");
-
+    var customer = await query
+        .AsNoTracking()
+        .FirstOrDefaultAsync()
+        ?? throw new KeyNotFoundException($"Customer with ID '{id}' not found or does not match the specified date range.");
+    
     return customer;
 }
 ```
